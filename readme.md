@@ -87,3 +87,17 @@ Here, you can access our [Non-Commercial Free License](https://github.com/MeshI
 Report bugs via our [GitHub Issues Form](https://github.com/MeshInspector/MeshLib/issues/) for efficient tracking and resolution. 
 
 Join the [GitHub Discussions](https://github.com/MeshInspector/MeshLib?tab=readme-ov-file#:~:text=GitHub%20Discussions%20page) to connect with developers, share ideas, and stay updated on MeshLib.
+
+---
+
+## **Brush Editor Code Evaluation**
+
+📋 **[Evaluation Summary](./EVALUATION_SUMMARY.md)** - Executive summary of brush editor code evaluation
+
+This repository includes a comprehensive evaluation of MeshLib code suitable for brush editor projects:
+
+- **[Full Technical Evaluation](./BRUSH_EDITOR_CODE_EVALUATION.md)** - Complete analysis of `SurfaceManipulationWidget` for brush-based mesh editing
+- **[Quick Reference Guide](./BRUSH_EDITOR_QUICK_REFERENCE.md)** - Fast lookup for developers implementing brush editing
+- **[Example Integration Code](./examples/brush_editor_example.cpp)** - Production-ready example showing how to use the brush tool
+
+The evaluation identifies the `SurfaceManipulationWidget` as a production-ready brush tool with 5 editing modes (Add, Remove, Relax, Laplacian, Patch), real-time performance, and built-in undo/redo support. **Status**: ✅ RECOMMENDED FOR USE
