@@ -94,15 +94,18 @@ Join the [GitHub Discussions](https://github.com/MeshInspector/MeshLib?tab=read
 
 📚 **[API Documentation for Brush Editors](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Comprehensive guide for integrating MeshLib into external brush editor projects
 
-**Target Project**: [UE5 Brush Editor](https://github.com/AlleyKatPr0/ue5-brush-editor) - Unreal Engine 5 brush-based mesh editor
+**Target Project**: [UE5 Blockout Level Editor](https://github.com/AlleyKatPr0/ue5-brush-editor) - UE5 tool for rapid level prototyping with greybox/whitebox geometry
 
 ### Documentation
 
-- **[UE5 Integration Guide](./UE5_INTEGRATION_GUIDE.md)** - ⭐ **START HERE** for UE5 integration
+- **[UE5 Integration Guide](./UE5_INTEGRATION_GUIDE.md)** - ⭐ **START HERE** for UE5 blockout tool integration
   - Plugin architecture and build configuration
   - UE5 ↔ MeshLib data type conversions
-  - Complete brush tool implementation examples
-  - Threading, performance, and Blueprint integration
+  - **Blockout-specific operations**: Face extrude, push/pull, Boolean CSG
+  - Primitive library (Box, Wall, Floor, Ramp, Stairs)
+  - Level design workflow patterns (additive, subtractive, modular)
+  - Performance optimization for Boolean operations
+  - Blueprint exposure for rapid prototyping
   
 - **[Full API Guide](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Complete documentation of MeshLib components
   - Core data structures and algorithms
@@ -111,13 +114,13 @@ Join the [GitHub Discussions](https://github.com/MeshInspector/MeshLib?tab=read
   
 - **[Quick Reference Card](./MESHLIB_API_QUICK_REFERENCE.md)** - Fast lookup for common operations
 
-### Key MeshLib APIs for Brush Editors
+### Key MeshLib APIs for Blockout Level Design
 
-- **Mesh data structures** (Mesh, MeshTopology, VertBitSet)
-- **Deformation algorithms** (Laplacian, relaxation, free-form, offsetting)
-- **Spatial queries** (AABB trees with fast refit, projection, distance calculations)
-- **Region operations** (BitSets, expansion/shrinking, surface distance)
-- **Undo/redo infrastructure** (HistoryActions with memory-efficient partial updates)
-- **Performance-optimized workflows** (incremental updates, parallel processing)
+- **Boolean operations** (`MRBoolean.h`) - Union, Subtract, Intersect for CSG-style workflows
+- **Mesh simplification** (`MRMeshDecimate.h`) - Optimize blockout geometry for playtesting
+- **Face operations** (`MROffsetMesh.h`) - Extrude, push/pull for box editing
+- **Mesh repair** (`MRMeshFix.h`) - Fix procedurally generated geometry issues
+- **Spatial queries** (AABB trees, projection) - Face selection and snapping
+- **Undo/redo infrastructure** - Transaction support for level design iterations
 
-These APIs are production-tested and designed for external integration in game engines and standalone applications.
+**Use Case**: Create and modify primitive shapes (boxes, walls, floors, ramps, stairs) for rapid level layout prototyping before art production. Supports CSG-style additive and subtractive workflows for building complex level geometry from simple primitives.
