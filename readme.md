@@ -94,17 +94,30 @@ Join the [GitHub Discussions](https://github.com/MeshInspector/MeshLib?tab=read
 
 📚 **[API Documentation for Brush Editors](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Comprehensive guide for integrating MeshLib into external brush editor projects
 
-If you're building a brush-based mesh editor application and want to leverage MeshLib's powerful mesh processing capabilities:
+**Target Project**: [UE5 Brush Editor](https://github.com/AlleyKatPr0/ue5-brush-editor) - Unreal Engine 5 brush-based mesh editor
 
-- **[Full API Guide](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Complete documentation of MeshLib components useful for brush editors
-- **[Quick Reference Card](./MESHLIB_API_QUICK_REFERENCE.md)** - Fast lookup for common operations and patterns
+### Documentation
 
-**Key MeshLib APIs for Brush Editors:**
-- Mesh data structures (Mesh, MeshTopology)
-- Deformation algorithms (Laplacian, relaxation, free-form)
-- Spatial queries (AABB trees, projection, distance calculations)
-- Region operations (BitSets, expansion/shrinking)
-- Undo/redo infrastructure (HistoryActions)
-- Performance-optimized workflows
+- **[UE5 Integration Guide](./UE5_INTEGRATION_GUIDE.md)** - ⭐ **START HERE** for UE5 integration
+  - Plugin architecture and build configuration
+  - UE5 ↔ MeshLib data type conversions
+  - Complete brush tool implementation examples
+  - Threading, performance, and Blueprint integration
+  
+- **[Full API Guide](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Complete documentation of MeshLib components
+  - Core data structures and algorithms
+  - Integration patterns and best practices
+  - Example implementations
+  
+- **[Quick Reference Card](./MESHLIB_API_QUICK_REFERENCE.md)** - Fast lookup for common operations
 
-These APIs are production-tested and designed for external integration.
+### Key MeshLib APIs for Brush Editors
+
+- **Mesh data structures** (Mesh, MeshTopology, VertBitSet)
+- **Deformation algorithms** (Laplacian, relaxation, free-form, offsetting)
+- **Spatial queries** (AABB trees with fast refit, projection, distance calculations)
+- **Region operations** (BitSets, expansion/shrinking, surface distance)
+- **Undo/redo infrastructure** (HistoryActions with memory-efficient partial updates)
+- **Performance-optimized workflows** (incremental updates, parallel processing)
+
+These APIs are production-tested and designed for external integration in game engines and standalone applications.

@@ -6,6 +6,9 @@ This document evaluates MeshLib components suitable for integration into externa
 
 If you're building a brush editor application and want to leverage MeshLib's powerful mesh processing capabilities, this guide identifies the key APIs and patterns you'll need.
 
+**Target Project**: UE5 Brush Editor (https://github.com/AlleyKatPr0/ue5-brush-editor)  
+**For UE5-specific integration**: See [UE5_INTEGRATION_GUIDE.md](./UE5_INTEGRATION_GUIDE.md)
+
 ## Core Components
 
 ### 1. Mesh Data Structures
