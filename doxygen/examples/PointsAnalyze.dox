@@ -1,0 +1,24 @@
+/**
+ \page ExamplePointsAnalyze Analyzing text-based point cloud files
+
+Following code presents an example of analyzing a text-based point cloud file (CSV, ASC, XYZ, TXT) before loading it.
+This is useful for understanding the file structure, detecting whether it contains normals or colors, and checking the data validity.
+
+<div class="tabbed">
+ 
+- <b class="tab-title">C++</b>
+\include PointsAnalyze.dox.cpp
+\sa \ref MR::PointsLoad::analyzeText
+\sa \ref MR::TextFileAnalysisResult
+
+- <b class="tab-title">Python</b>
+\include PointsAnalyze.dox.py
+
+- <b class="tab-title">C</b>
+\include PointsAnalyze.dox.c
+\sa \ref mrPointsAnalyzeText
+\sa \ref MRTextFileAnalysisResult
+
+</div>
+
+ */
