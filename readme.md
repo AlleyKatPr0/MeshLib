@@ -87,3 +87,38 @@ Here, you can access our [Non-Commercial Free License](https://github.com/MeshI
 Report bugs via our [GitHub Issues Form](https://github.com/MeshInspector/MeshLib/issues/) for efficient tracking and resolution. 
 
 Join the [GitHub Discussions](https://github.com/MeshInspector/MeshLib?tab=readme-ov-file#:~:text=GitHub%20Discussions%20page) to connect with developers, share ideas, and stay updated on MeshLib.
+
+---
+
+## **MeshLib APIs for External Brush Editors**
+
+📚 **Quick Answer: [Can I Use MeshLib's Math?](./MESHLIB_MATH_EVALUATION.md)** - ✅ **YES** - Direct evaluation of MeshLib's standalone math capabilities
+
+**Target Project**: [UE5 Blockout Level Editor](https://github.com/AlleyKatPr0/ue5-brush-editor) - UE5 tool for rapid level prototyping with greybox/whitebox geometry
+
+### Documentation
+
+- **[Math Evaluation](./MESHLIB_MATH_EVALUATION.md)** - ⭐ **START HERE** - Can MeshLib math be used in your project?
+  - Direct yes/no answer with justification
+  - Standalone math libraries (Vector, Matrix, Quaternion, transforms)
+  - Geometric primitives and intersection tests
+  - Simple integration examples
+  - Minimal build configuration
+  
+- **[UE5 Integration Guide](./UE5_INTEGRATION_GUIDE.md)** - Complete UE5 blockout tool integration
+  - Plugin architecture and build configuration
+  - Blockout-specific operations (CSG, face editing, primitives)
+  - Level design workflow patterns
+  
+- **[Full API Guide](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Complete MeshLib API documentation
+- **[Quick Reference Card](./MESHLIB_API_QUICK_REFERENCE.md)** - Fast lookup
+
+### Key MeshLib Math Libraries (Standalone)
+
+- **Vector/Matrix math** (`Vector3`, `Matrix3`, `Matrix4`) - All standard operations
+- **Transformations** (`AffineXf3`, `RigidXf3`, `Quaternion`) - 3D transforms with interpolation
+- **Geometric primitives** (`Box`, `Sphere`, `Plane3`, `Line3`) - Basic shapes
+- **Intersection tests** - Ray-box, triangle-triangle, line-plane (SIMD optimized)
+- **Distance calculations** - Point-triangle, bounding boxes
+
+**Simple Answer**: YES, MeshLib's math can be used standalone. Just include the headers you need, no full mesh system required.
