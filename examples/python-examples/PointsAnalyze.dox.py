@@ -19,6 +19,6 @@ if analysis_result.firstDataLine:
     print(f"  First data line: {analysis_result.firstDataLine}")
 
 # Now load the full point cloud
-point_cloud = mrmeshpy.loadPoints("pointcloud.csv")
+point_cloud = mrmeshpy.PointsLoad.fromText("pointcloud.csv")
 
 print(f"Loaded {point_cloud.validPoints.count()} points")

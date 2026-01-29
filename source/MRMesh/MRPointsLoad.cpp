@@ -46,11 +46,12 @@ Expected<TextFileAnalysisResult> analyzeText( std::istream& in )
     static const std::set<char> cCommentChars { '#', ';', '/', '!', '%' };
 
     // detect normals and colors
-    constexpr Vector3d cInvalidNormal( 0.f, 0.f, 0.f );
+    constexpr Vector3d cInvalidNormal( 0.0, 0.0, 0.0 );
     constexpr Color cInvalidColor( 0, 0, 0, 0 );
     Vector3d firstPoint;
     std::string_view header;
     std::string_view firstDataLineView;
+    size_t firstDataLineIndex = 0;
 
     for ( auto i = 0; i < lineCount; ++i )
     {
@@ -81,6 +82,7 @@ Expected<TextFileAnalysisResult> analyzeText( std::istream& in )
         // We found the first valid data line
         result.dataLines = 1;
         firstDataLineView = line;
+        firstDataLineIndex = i;
 
         if ( normal != cInvalidNormal )
             result.hasNormals = true;
@@ -96,7 +98,7 @@ Expected<TextFileAnalysisResult> analyzeText( std::istream& in )
     size_t sampledDataLines = 0;
     size_t sampledLines = 0;
 
-    for ( auto i = result.emptyLines + result.commentLines + ( header.empty() ? 0 : 1 ) + 1; i < lineCount; i += sampleInterval )
+    for ( auto i = firstDataLineIndex + sampleInterval; i < lineCount; i += sampleInterval )
     {
         const auto line = parseBom( { buf->data() + newlines[i], newlines[i + 1] - newlines[i + 0] } );
         sampledLines++;
@@ -116,8 +118,17 @@ Expected<TextFileAnalysisResult> analyzeText( std::istream& in )
     // Estimate total data lines based on sampling
     if ( sampledLines > 0 )
     {
-        size_t estimatedRemainingDataLines = ( sampledDataLines * ( lineCount - ( result.emptyLines + result.commentLines + ( header.empty() ? 0 : 1 ) + 1 ) ) ) / sampledLines;
+        // Calculate the number of remaining lines after the first data line
+        size_t remainingLines = lineCount - firstDataLineIndex - 1;
+        // Estimate data lines: we already have 1 data line + estimated from sampling
+        double dataLineRatio = static_cast<double>( sampledDataLines ) / static_cast<double>( sampledLines );
+        size_t estimatedRemainingDataLines = static_cast<size_t>( remainingLines * dataLineRatio );
         result.dataLines += estimatedRemainingDataLines;
+    }
+    else if ( firstDataLineIndex < lineCount - 1 )
+    {
+        // If no sampling was done (file too small), count all remaining lines as potential data
+        result.dataLines = lineCount - result.emptyLines - result.commentLines - ( header.empty() ? 0 : 1 );
     }
 
     // Store header and first data line as strings

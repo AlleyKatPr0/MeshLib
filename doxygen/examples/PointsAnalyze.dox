@@ -1,7 +1,7 @@
 /**
  \page ExamplePointsAnalyze Analyzing text-based point cloud files
 
-Following code presents an example of analyzing a text-based point cloud file (CSV, ASC, XYZ, TXT) before loading it.
+The following code presents an example of analyzing a text-based point cloud file (CSV, ASC, XYZ, TXT) before loading it.
 This is useful for understanding the file structure, detecting whether it contains normals or colors, and checking the data validity.
 
 <div class="tabbed">
