@@ -90,14 +90,21 @@ Join the [GitHub Discussions](https://github.com/MeshInspector/MeshLib?tab=read
 
 ---
 
-## **Brush Editor Code Evaluation**
+## **MeshLib APIs for External Brush Editors**
 
-📋 **[Evaluation Summary](./EVALUATION_SUMMARY.md)** - Executive summary of brush editor code evaluation
+📚 **[API Documentation for Brush Editors](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Comprehensive guide for integrating MeshLib into external brush editor projects
 
-This repository includes a comprehensive evaluation of MeshLib code suitable for brush editor projects:
+If you're building a brush-based mesh editor application and want to leverage MeshLib's powerful mesh processing capabilities:
 
-- **[Full Technical Evaluation](./BRUSH_EDITOR_CODE_EVALUATION.md)** - Complete analysis of `SurfaceManipulationWidget` for brush-based mesh editing
-- **[Quick Reference Guide](./BRUSH_EDITOR_QUICK_REFERENCE.md)** - Fast lookup for developers implementing brush editing
-- **[Example Integration Code](./examples/brush_editor_example.cpp)** - Production-ready example showing how to use the brush tool
+- **[Full API Guide](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Complete documentation of MeshLib components useful for brush editors
+- **[Quick Reference Card](./MESHLIB_API_QUICK_REFERENCE.md)** - Fast lookup for common operations and patterns
 
-The evaluation identifies the `SurfaceManipulationWidget` as a production-ready brush tool with 5 editing modes (Add, Remove, Relax, Laplacian, Patch), real-time performance, and built-in undo/redo support. **Status**: ✅ RECOMMENDED FOR USE
+**Key MeshLib APIs for Brush Editors:**
+- Mesh data structures (Mesh, MeshTopology)
+- Deformation algorithms (Laplacian, relaxation, free-form)
+- Spatial queries (AABB trees, projection, distance calculations)
+- Region operations (BitSets, expansion/shrinking)
+- Undo/redo infrastructure (HistoryActions)
+- Performance-optimized workflows
+
+These APIs are production-tested and designed for external integration.
