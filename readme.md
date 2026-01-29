@@ -92,35 +92,33 @@ Join the [GitHub Discussions](https://github.com/MeshInspector/MeshLib?tab=read
 
 ## **MeshLib APIs for External Brush Editors**
 
-📚 **[API Documentation for Brush Editors](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Comprehensive guide for integrating MeshLib into external brush editor projects
+📚 **Quick Answer: [Can I Use MeshLib's Math?](./MESHLIB_MATH_EVALUATION.md)** - ✅ **YES** - Direct evaluation of MeshLib's standalone math capabilities
 
 **Target Project**: [UE5 Blockout Level Editor](https://github.com/AlleyKatPr0/ue5-brush-editor) - UE5 tool for rapid level prototyping with greybox/whitebox geometry
 
 ### Documentation
 
-- **[UE5 Integration Guide](./UE5_INTEGRATION_GUIDE.md)** - ⭐ **START HERE** for UE5 blockout tool integration
+- **[Math Evaluation](./MESHLIB_MATH_EVALUATION.md)** - ⭐ **START HERE** - Can MeshLib math be used in your project?
+  - Direct yes/no answer with justification
+  - Standalone math libraries (Vector, Matrix, Quaternion, transforms)
+  - Geometric primitives and intersection tests
+  - Simple integration examples
+  - Minimal build configuration
+  
+- **[UE5 Integration Guide](./UE5_INTEGRATION_GUIDE.md)** - Complete UE5 blockout tool integration
   - Plugin architecture and build configuration
-  - UE5 ↔ MeshLib data type conversions
-  - **Blockout-specific operations**: Face extrude, push/pull, Boolean CSG
-  - Primitive library (Box, Wall, Floor, Ramp, Stairs)
-  - Level design workflow patterns (additive, subtractive, modular)
-  - Performance optimization for Boolean operations
-  - Blueprint exposure for rapid prototyping
+  - Blockout-specific operations (CSG, face editing, primitives)
+  - Level design workflow patterns
   
-- **[Full API Guide](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Complete documentation of MeshLib components
-  - Core data structures and algorithms
-  - Integration patterns and best practices
-  - Example implementations
-  
-- **[Quick Reference Card](./MESHLIB_API_QUICK_REFERENCE.md)** - Fast lookup for common operations
+- **[Full API Guide](./MESHLIB_APIS_FOR_BRUSH_EDITORS.md)** - Complete MeshLib API documentation
+- **[Quick Reference Card](./MESHLIB_API_QUICK_REFERENCE.md)** - Fast lookup
 
-### Key MeshLib APIs for Blockout Level Design
+### Key MeshLib Math Libraries (Standalone)
 
-- **Boolean operations** (`MRBoolean.h`) - Union, Subtract, Intersect for CSG-style workflows
-- **Mesh simplification** (`MRMeshDecimate.h`) - Optimize blockout geometry for playtesting
-- **Face operations** (`MROffsetMesh.h`) - Extrude, push/pull for box editing
-- **Mesh repair** (`MRMeshFix.h`) - Fix procedurally generated geometry issues
-- **Spatial queries** (AABB trees, projection) - Face selection and snapping
-- **Undo/redo infrastructure** - Transaction support for level design iterations
+- **Vector/Matrix math** (`Vector3`, `Matrix3`, `Matrix4`) - All standard operations
+- **Transformations** (`AffineXf3`, `RigidXf3`, `Quaternion`) - 3D transforms with interpolation
+- **Geometric primitives** (`Box`, `Sphere`, `Plane3`, `Line3`) - Basic shapes
+- **Intersection tests** - Ray-box, triangle-triangle, line-plane (SIMD optimized)
+- **Distance calculations** - Point-triangle, bounding boxes
 
-**Use Case**: Create and modify primitive shapes (boxes, walls, floors, ramps, stairs) for rapid level layout prototyping before art production. Supports CSG-style additive and subtractive workflows for building complex level geometry from simple primitives.
+**Simple Answer**: YES, MeshLib's math can be used standalone. Just include the headers you need, no full mesh system required.
