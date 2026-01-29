@@ -176,7 +176,7 @@ Before using in production:
 
 - [ ] Validate radius > 0
 - [ ] Check sharpness in [0, 100]
-- [ ] Verify relaxForce in (0, 0.5]
+- [ ] Verify relaxForce in [0, 0.5] (0 means no relaxation)
 - [ ] Ensure mesh has valid topology
 - [ ] Test undo/redo functionality
 - [ ] Profile performance with target mesh sizes
@@ -198,12 +198,16 @@ std::cout << "Radius: " << region.radius << std::endl;
 
 ### Check Performance
 ```cpp
-// Time your edits
+// Time your edits (wrap your editing operations)
 auto start = std::chrono::high_resolution_clock::now();
-widget->changeSurface_();
+// Perform editing operations (mouse movements trigger internal updates)
+// ... user interaction ...
 auto end = std::chrono::high_resolution_clock::now();
 auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 std::cout << "Edit took: " << duration.count() << "ms" << std::endl;
+
+// Note: The widget handles edits internally via mouse events
+// You cannot directly call internal methods like changeSurface_()
 ```
 
 ---

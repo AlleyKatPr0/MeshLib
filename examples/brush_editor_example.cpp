@@ -67,10 +67,8 @@ public:
         // Default to Add mode
         settings.workMode = MR::SurfaceManipulationWidget::WorkMode::Add;
         
-        // Calculate appropriate radius based on mesh size
-        float diagonal = objectMesh_->getBoundingBox().diagonal();
-        settings.radius = diagonal * 0.02f;  // 2% of mesh diagonal
-        settings.editForce = diagonal * 0.01f;  // 1% of diagonal
+        // Calculate appropriate radius and force based on mesh size
+        calculateSizeBasedParameters(settings);
         
         // Good default values for interactive editing
         settings.sharpness = 50.0f;  // Medium falloff
@@ -88,8 +86,9 @@ public:
         currentSettings_.workMode = mode;
         brushWidget_->setSettings(currentSettings_);
         
-        const char* modeNames[] = {"Add", "Remove", "Relax", "Laplacian", "Patch"};
-        std::cout << "Switched to " << modeNames[static_cast<int>(mode)] << " mode" << std::endl;
+        // Use safe mode name lookup
+        std::string modeName = getModeNameSafe(mode);
+        std::cout << "Switched to " << modeName << " mode" << std::endl;
     }
 
     /**
@@ -212,9 +211,7 @@ public:
         else if (presetName == "carve") {
             // Precise carving tool
             currentSettings_.workMode = MR::SurfaceManipulationWidget::WorkMode::Remove;
-            float diagonal = objectMesh_->getBoundingBox().diagonal();
-            currentSettings_.radius = diagonal * 0.01f;
-            currentSettings_.editForce = diagonal * 0.005f;
+            calculateSizeBasedParameters(currentSettings_, 0.01f, 0.005f);  // 1% radius, 0.5% force
             currentSettings_.sharpness = 80.0f;
             currentSettings_.relaxForceAfterEdit = 0.1f;
             std::cout << "Applied 'carve' preset" << std::endl;
@@ -222,9 +219,7 @@ public:
         else if (presetName == "sculpt") {
             // Organic sculpting
             currentSettings_.workMode = MR::SurfaceManipulationWidget::WorkMode::Add;
-            float diagonal = objectMesh_->getBoundingBox().diagonal();
-            currentSettings_.radius = diagonal * 0.025f;
-            currentSettings_.editForce = diagonal * 0.015f;
+            calculateSizeBasedParameters(currentSettings_, 0.025f, 0.015f);  // 2.5% radius, 1.5% force
             currentSettings_.sharpness = 40.0f;
             currentSettings_.relaxForceAfterEdit = 0.25f;
             std::cout << "Applied 'sculpt' preset" << std::endl;
@@ -251,9 +246,9 @@ public:
      * @brief Print current settings (for debugging)
      */
     void printSettings() const {
-        const char* modeNames[] = {"Add", "Remove", "Relax", "Laplacian", "Patch"};
+        std::string modeName = getModeNameSafe(currentSettings_.workMode);
         std::cout << "\n=== Current Brush Settings ===" << std::endl;
-        std::cout << "Mode: " << modeNames[static_cast<int>(currentSettings_.workMode)] << std::endl;
+        std::cout << "Mode: " << modeName << std::endl;
         std::cout << "Radius: " << currentSettings_.radius << std::endl;
         std::cout << "Strength: " << currentSettings_.editForce << std::endl;
         std::cout << "Sharpness: " << currentSettings_.sharpness << std::endl;
@@ -263,6 +258,37 @@ public:
     }
 
 private:
+    // Configuration constants
+    static constexpr float DEFAULT_RADIUS_RATIO = 0.02f;   // 2% of mesh diagonal
+    static constexpr float DEFAULT_FORCE_RATIO = 0.01f;    // 1% of mesh diagonal
+
+    /**
+     * @brief Helper to get mode name safely
+     */
+    static std::string getModeNameSafe(MR::SurfaceManipulationWidget::WorkMode mode) {
+        switch (mode) {
+            case MR::SurfaceManipulationWidget::WorkMode::Add: return "Add";
+            case MR::SurfaceManipulationWidget::WorkMode::Remove: return "Remove";
+            case MR::SurfaceManipulationWidget::WorkMode::Relax: return "Relax";
+            case MR::SurfaceManipulationWidget::WorkMode::Laplacian: return "Laplacian";
+            case MR::SurfaceManipulationWidget::WorkMode::Patch: return "Patch";
+            default: return "Unknown";
+        }
+    }
+
+    /**
+     * @brief Calculate size-based parameters for settings
+     */
+    void calculateSizeBasedParameters(
+        MR::SurfaceManipulationWidget::Settings& settings,
+        float radiusRatio = DEFAULT_RADIUS_RATIO,
+        float forceRatio = DEFAULT_FORCE_RATIO
+    ) {
+        float diagonal = objectMesh_->getBoundingBox().diagonal();
+        settings.radius = diagonal * radiusRatio;
+        settings.editForce = diagonal * forceRatio;
+    }
+
     std::shared_ptr<MR::ObjectMesh> objectMesh_;
     std::shared_ptr<MR::SurfaceManipulationWidget> brushWidget_;
     MR::SurfaceManipulationWidget::Settings currentSettings_;

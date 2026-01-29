@@ -46,10 +46,10 @@ The widget supports **5 distinct editing modes**:
 struct Settings {
     WorkMode workMode = WorkMode::Add;
     float radius = 1.f;                    // Brush size (editing area radius)
-    float relaxForce = 0.2f;              // Smoothing speed (0 - 0.5]
+    float relaxForce = 0.2f;              // Smoothing speed [0 - 0.5], 0 = no relax
     float editForce = 1.f;                // Strength of mesh change
-    float sharpness = 50.f;               // Force falloff (0 - 100)
-    float relaxForceAfterEdit = 0.25f;    // Post-edit auto-smoothing [0 - 0.5]
+    float sharpness = 50.f;               // Force falloff [0 - 100]
+    float relaxForceAfterEdit = 0.25f;    // Post-edit auto-smoothing [0 - 0.5], 0 = none
     EdgeWeights edgeWeights = EdgeWeights::Cotan; // For Laplacian/Patch modes
 };
 ```
@@ -130,16 +130,15 @@ void updateDistancesAndRegion_(
 - Returns vertices within brush radius
 
 #### Surface Modification
-```cpp
-void changeSurface_();
-```
 
-**Process**:
+**Process** (internal, triggered by mouse events):
 1. Calculate displacement for each vertex based on distance from center
 2. Apply sharpness-based force falloff
 3. Move vertices according to work mode (Add/Remove/Relax)
 4. Optional: Apply relaxation to edited region
 5. Update mesh and trigger redraw
+
+Note: Surface modification is handled internally by the widget when mouse events occur. The implementation is in the private `changeSurface_()` method.
 
 #### Laplacian Deformation
 ```cpp
