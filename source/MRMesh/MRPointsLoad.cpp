@@ -18,6 +18,120 @@
 namespace MR::PointsLoad
 {
 
+Expected<TextFileAnalysisResult> analyzeText( const std::filesystem::path& file )
+{
+    std::ifstream in( file, std::ifstream::binary );
+    if ( !in )
+        return unexpected( std::string( "Cannot open file for reading " ) + utf8string( file ) );
+
+    return addFileNameInError( analyzeText( in ), file );
+}
+
+Expected<TextFileAnalysisResult> analyzeText( std::istream& in )
+{
+    MR_TIMER;
+
+    auto buf = readCharBuffer( in );
+    if ( !buf )
+        return unexpected( std::move( buf.error() ) );
+
+    const auto newlines = splitByLines( buf->data(), buf->size() );
+    const auto lineCount = newlines.size() - 1;
+
+    TextFileAnalysisResult result;
+    result.totalLines = lineCount;
+
+    // CSV format specification (RFC 4180) doesn't support comments.
+    // However, there's several unofficial conventions to mark lines as comments rather than data records.
+    static const std::set<char> cCommentChars { '#', ';', '/', '!', '%' };
+
+    // detect normals and colors
+    constexpr Vector3d cInvalidNormal( 0.f, 0.f, 0.f );
+    constexpr Color cInvalidColor( 0, 0, 0, 0 );
+    Vector3d firstPoint;
+    std::string_view header;
+    std::string_view firstDataLineView;
+
+    for ( auto i = 0; i < lineCount; ++i )
+    {
+        const auto line = parseBom( { buf->data() + newlines[i], newlines[i + 1] - newlines[i + 0] } );
+        
+        if ( line.empty() )
+        {
+            result.emptyLines++;
+            continue;
+        }
+        
+        if ( cCommentChars.contains( line[0] ) )
+        {
+            result.commentLines++;
+            continue;
+        }
+
+        auto normal = cInvalidNormal;
+        auto color = cInvalidColor;
+        auto parseResult = parseTextCoordinate( line, firstPoint, &normal, &color );
+        if ( !parseResult )
+        {
+            if ( header.empty() )
+                header = line;
+            continue;
+        }
+
+        // We found the first valid data line
+        result.dataLines = 1;
+        firstDataLineView = line;
+
+        if ( normal != cInvalidNormal )
+            result.hasNormals = true;
+        if ( color != cInvalidColor )
+            result.hasColors = true;
+
+        break;
+    }
+
+    // Count remaining data lines (quick sampling approach)
+    // We'll sample every 100th line to estimate data lines for performance
+    const size_t sampleInterval = 100;
+    size_t sampledDataLines = 0;
+    size_t sampledLines = 0;
+
+    for ( auto i = result.emptyLines + result.commentLines + ( header.empty() ? 0 : 1 ) + 1; i < lineCount; i += sampleInterval )
+    {
+        const auto line = parseBom( { buf->data() + newlines[i], newlines[i + 1] - newlines[i + 0] } );
+        sampledLines++;
+        
+        if ( line.empty() )
+            continue;
+        
+        if ( cCommentChars.contains( line[0] ) )
+            continue;
+
+        Vector3d point( noInit );
+        auto parseResult = parseTextCoordinate( line, point, nullptr, nullptr );
+        if ( parseResult )
+            sampledDataLines++;
+    }
+
+    // Estimate total data lines based on sampling
+    if ( sampledLines > 0 )
+    {
+        size_t estimatedRemainingDataLines = ( sampledDataLines * ( lineCount - ( result.emptyLines + result.commentLines + ( header.empty() ? 0 : 1 ) + 1 ) ) ) / sampledLines;
+        result.dataLines += estimatedRemainingDataLines;
+    }
+
+    // Store header and first data line as strings
+    if ( !header.empty() )
+        result.header = std::string( header );
+    if ( !firstDataLineView.empty() )
+        result.firstDataLine = std::string( firstDataLineView );
+
+    if ( result.dataLines == 0 )
+        return unexpected( "Could not find any valid point data in the file" );
+
+    return result;
+}
+
 Expected<PointCloud> fromText( const std::filesystem::path& file, const PointsLoadSettings& settings )
 {
     std::ifstream in( file, std::ifstream::binary );
